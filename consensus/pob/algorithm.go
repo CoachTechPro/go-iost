@@ -49,7 +49,8 @@ func generateBlock(acc *account.KeyPair, txPool txpool.TxPool, db db.MVCCDB) (*b
 	}
 	db.Checkout(string(topBlock.HeadHash()))
 
-	// call vote
+	// exec txs
+	verifier.BlockBaseTx.Time = time.Now().UnixNano()
 	v := verifier.Verifier{}
 	dropList, _, err := v.Gen(&blk, topBlock, db, txIter, &verifier.Config{
 		Mode:        0,
